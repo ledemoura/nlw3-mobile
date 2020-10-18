@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -23,9 +23,11 @@ export default function OrphanagesMap() {
   console.log(orphanages);
 
   useFocusEffect(() => {
-    api.get('/orphanages').then(response => {
-      setOrphanages(response.data);
-    });
+    useCallback(() => {
+      api.get('/orphanages').then(response => {
+        setOrphanages(response.data);
+      });
+    }, []);
   });
 
   function handleNavigateToOrphanageDetails(id: number) {
